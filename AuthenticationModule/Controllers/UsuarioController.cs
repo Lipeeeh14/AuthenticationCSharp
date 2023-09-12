@@ -16,7 +16,7 @@ namespace AuthenticationModule.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> CadastraUsuario(CreateUsuarioDTO createUsuarioDTO) 
+		public async Task<IActionResult> CadastraUsuario(CreateUsuarioDTO createUsuarioDTO)
 		{
 			var result = await _usuarioService.CadastrarUsuario(createUsuarioDTO);
 
@@ -24,6 +24,18 @@ namespace AuthenticationModule.Controllers
 				return BadRequest("Erro ao cadastrar o usuário!");
 
 			return Ok("Usuário cadastrado com sucesso!");
+		}
+
+		[HttpPost]
+		[Route("login")]
+		public async Task<IActionResult> Login(LoginUsuarioDTO loginUsuarioDTO)
+		{
+			var result = await _usuarioService.Login(loginUsuarioDTO);
+
+			if (string.IsNullOrEmpty(result))
+				return BadRequest("Erro ao realizar o login!");
+
+			return Ok(result);
 		}
 	}
 }
