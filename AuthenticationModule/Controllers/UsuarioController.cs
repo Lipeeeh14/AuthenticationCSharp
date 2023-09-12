@@ -1,4 +1,5 @@
 ﻿using AuthenticationModule.Data.DTOs;
+using AuthenticationModule.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationModule.Controllers
@@ -7,10 +8,22 @@ namespace AuthenticationModule.Controllers
 	[ApiController]
 	public class UsuarioController : ControllerBase
 	{
-		[HttpPost]
-		public IActionResult CadastraUsuario(CreateUsuarioDTO createUsuarioDTO) 
+		private readonly IUsuarioService _usuarioService;
+
+		public UsuarioController(IUsuarioService usuarioService)
 		{
-			throw new NotImplementedException();
+			_usuarioService = usuarioService;
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> CadastraUsuario(CreateUsuarioDTO createUsuarioDTO) 
+		{
+			var result = await _usuarioService.CadastrarUsuario(createUsuarioDTO);
+
+			if (!result)
+				return BadRequest("Erro ao cadastrar o usuário!");
+
+			return Ok("Usuário cadastrado com sucesso!");
 		}
 	}
 }
